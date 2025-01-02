@@ -85,9 +85,9 @@ For users who prefer a Docker-based environment, you can create a custom Docker 
     WORKDIR /home/workspace
     ```
 
-3. Build the Docker image and tag it as `EdgeImpulse:ubuntu_focal`:
+3. Build the Docker image and tag it as `edgeimpulse:ubuntu_focal`:
     ```bash
-    docker build -t EdgeImpulse:ubuntu_focal .
+    docker build -t edgeimpulse:ubuntu_focal .
     ```
 
 ### Running the Docker Container
@@ -96,7 +96,7 @@ For users who prefer a Docker-based environment, you can create a custom Docker 
     ```bash
     docker run -it --rm \
         -v /path/to/your/workspace:/home/workspace \
-        EdgeImpulse:ubuntu_focal
+        edgeimpulse:ubuntu_focal
     ```
 
     Replace `/path/to/your/workspace` with the absolute path to your local workspace. For example, on Linux or macOS, this might be `/home/yourusername/workspace`.
