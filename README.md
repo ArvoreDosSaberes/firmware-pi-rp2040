@@ -65,6 +65,9 @@ For users who prefer a Docker-based environment, you can create a custom Docker 
     # Use Ubuntu Focal as the base image
     FROM ubuntu:focal
 
+    # Set environment variable to prevent interactive prompts
+    ENV DEBIAN_FRONTEND=noninteractive
+
     # Install necessary tools and libraries
     RUN apt-get update && apt-get install -y \
         cmake \
