@@ -89,7 +89,10 @@ For users who prefer a Docker-based environment, you can create a custom Docker 
         mkdir -p ${CMAKE_DIR} && \
         sh cmake-${CMAKE_VERSION}.${CMAKE_BUILD}-linux-x86_64.sh --skip-license --prefix=${CMAKE_DIR} && \
         rm -rf /tmp/cmake
-    
+
+    # Adicionar o diretório bin do CMake ao PATH
+    ENV PATH="${CMAKE_DIR}/bin:${PATH}"
+
     # Configurar o pico-sdk
     ENV PICO_SDK_PATH=/opt/pico-sdk
     RUN git clone --recurse-submodules https://github.com/raspberrypi/pico-sdk ${PICO_SDK_PATH}
