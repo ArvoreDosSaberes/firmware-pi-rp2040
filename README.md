@@ -62,30 +62,41 @@ For users who prefer a Docker-based environment, you can create a custom Docker 
 1. Ensure Docker is installed and running on your system.
 2. Create a `Dockerfile` with the following content:
     ```dockerfile
-    # Use Ubuntu Focal as the base image
+    # Use Ubuntu Focal como imagem base
     FROM ubuntu:focal
 
-    # Set environment variable to prevent interactive prompts
+    # Definir o ambiente não interativo para evitar prompts durante a instalação
     ENV DEBIAN_FRONTEND=noninteractive
 
-    # Install necessary tools and libraries
+    # Atualizar e instalar ferramentas necessárias
     RUN apt-get update && apt-get install -y \
-        cmake \
+        wget \
+        git \
         gcc-arm-none-eabi \
         libnewlib-arm-none-eabi \
         libstdc++-arm-none-eabi-newlib \
-        build-essential \
-        git && \
-        apt-get clean
-
-    # Set up pico-sdk
-    RUN git clone --recurse-submodules https://github.com/raspberrypi/pico-sdk /opt/pico-sdk
-
-    # Set the PICO SDK path
-    ENV PICO_SDK_PATH="/opt/pico-sdk"
-
-    # Set the working directory
+        build-essential && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/*
+    
+    # Definir versões e caminhos para o CMake
+    ENV CMAKE_VERSION=3.28
+    ENV CMAKE_BUILD=1
+    ENV CMAKE_DIR=/opt/cmake
+    RUN mkdir -p /tmp/cmake && \
+        cd /tmp/cmake && \
+        wget https://cmake.org/files/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.${CMAKE_BUILD}-linux-x86_64.sh && \
+        mkdir -p ${CMAKE_DIR} && \
+        sh cmake-${CMAKE_VERSION}.${CMAKE_BUILD}-linux-x86_64.sh --skip-license --prefix=${CMAKE_DIR} && \
+        rm -rf /tmp/cmake
+    
+    # Configurar o pico-sdk
+    ENV PICO_SDK_PATH=/opt/pico-sdk
+    RUN git clone --recurse-submodules https://github.com/raspberrypi/pico-sdk ${PICO_SDK_PATH}
+    
+    # Definir o diretório de trabalho
     WORKDIR /home/workspace
+
     ```
 
 3. Build the Docker image and tag it as `edgeimpulse:ubuntu_focal`:
